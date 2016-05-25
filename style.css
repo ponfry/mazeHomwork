@@ -7,9 +7,10 @@ body {
     background: #E4F5FB;
 }
 .maze {
-    height: calc(100% - 6px);
+    height: calc(100% - 7px);
     width: calc(100% - 6px);
     border: 3px solid black;
+    border-bottom: 4px solid black;;
 }
 .block {
     float: left;
@@ -17,5 +18,11 @@ body {
     width: 10px;
 }
 .wall {
-    background-color: #000;
+    background: #000;
+}
+.start {
+    background: red;
+}
+.finish {
+    background: blue;
 }
