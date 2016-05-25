@@ -1,0 +1,21 @@
+body {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #E4F5FB;
+}
+.maze {
+    height: calc(100% - 6px);
+    width: calc(100% - 6px);
+    border: 3px solid black;
+}
+.block {
+    float: left;
+    height: 10px;
+    width: 10px;
+}
+.wall {
+    background-color: #000;
+}
