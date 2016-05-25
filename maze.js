@@ -34,7 +34,10 @@ function fillMaze() {
         if (valid(opposite[0], opposite[1])) {
             if (MAZE["maze"][opposite[0]][opposite[1]] == 'maze') MAZE["walls"].splice( MAZE["walls"].indexOf(randomWall), 1);
 
-            else amaze(randomWall[0], randomWall[1], false), amaze(opposite[0], opposite[1], true);
+            else {
+                amaze(randomWall[0], randomWall[1], false);
+                amaze(opposite[0], opposite[1], true);
+            }
 
         }
         else MAZE["walls"].splice(MAZE["walls"].indexOf(randomWall), 1);
