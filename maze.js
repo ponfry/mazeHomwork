@@ -40,10 +40,9 @@ function fillMaze() {
         else MAZE["walls"].splice(MAZE["walls"].indexOf(randomWall), 1);
     }
 
-    $("#0-0").removeClass().addClass("block start");
-    $("#" + (SIZE["height"]-2) + "-" + (SIZE["width"]-2) ).removeClass().addClass("block finish");
+    $("#0-0").removeClass().addClass("block start").attr("title", "start");
+    $("#" + (SIZE["height"]-2) + "-" + (SIZE["width"]-2) ).removeClass().addClass("block finish").attr("title", "finish");
 }
-
 
 function amaze(y, x, addBlockWalls) {
     MAZE["maze"][y][x] = 'maze';
@@ -60,8 +59,9 @@ function valid(a, b) {
 }
 
 function check(){
-    var width = $("body").width();
-    var height = $("body").height();
+    var size = $("body");
+    var width = size.width();
+    var height = size.height();
 
     width =width/10 - width%10*0.1;
     if(width % 2 != 0) width=width-1;
