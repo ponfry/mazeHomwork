@@ -1,16 +1,23 @@
 ;$(document).ready(function () {
     builtMaze();
+    $(window).resize(function () {
+        builtMaze();
+    })
 });
 
 function builtMaze() {
+    check();
     formMaze();
     amaze(MAZE["currentPosition"][0], MAZE["currentPosition"][1], true);
     fillMaze();
 }
 
 function formMaze() {
+    $(".block").remove();
+
     for (var y = 0; y < SIZE["height"]; y++) {
         MAZE["maze"][y] = [];
+
         for (var x = 0; x < SIZE["width"]; MAZE["maze"][y][x++] = 'wall') {
             $(".maze").append("<div class=\"block wall\" id=" + y + "-" + x + "></div>");
         }
@@ -27,16 +34,14 @@ function fillMaze() {
         if (valid(opposite[0], opposite[1])) {
             if (MAZE["maze"][opposite[0]][opposite[1]] == 'maze') MAZE["walls"].splice( MAZE["walls"].indexOf(randomWall), 1);
 
-            else {
-                amaze(randomWall[0], randomWall[1], false);
-                amaze(opposite[0], opposite[1], true);
-            }
+            else amaze(randomWall[0], randomWall[1], false), amaze(opposite[0], opposite[1], true);
+
         }
         else MAZE["walls"].splice(MAZE["walls"].indexOf(randomWall), 1);
     }
 
     $("#0-0").removeClass().addClass("block start");
-    $("#65-135").removeClass().addClass("block finish");
+    $("#" + (SIZE["height"]-2) + "-" + (SIZE["width"]-2) ).removeClass().addClass("block finish");
 }
 
 
@@ -54,13 +59,27 @@ function valid(a, b) {
     return !!(a < SIZE["height"] && a >= 0 && b < SIZE["width"] && b >= 0);
 }
 
+function check(){
+    var width = $("body").width();
+    var height = $("body").height();
+
+    width =width/10 - width%10*0.1;
+    if(width % 2 != 0) width=width-1;
+
+    height = height/10 - height%10*0.1;
+    if(height % 2 != 0) height=height-1;
+
+    SIZE["width"] = width;
+    SIZE["height"] = height;
+}
+
 var SIZE = {
-    width: 136,
-    height: 66
+    width: 0,
+    height: 0
 };
 
 var MAZE = {
     maze:[],
     walls:[],
-    currentPosition:[32,67]
+    currentPosition:[0,0]
 };
