@@ -2,14 +2,15 @@
     builtMaze();
     $(window).resize(function () {
         builtMaze();
-    })
+    });
+    $("body").keydown(move);
 });
 
 function builtMaze() {
     check();
     formMaze();
     amaze(MAZE.currentPosition[0], MAZE.currentPosition[1], true);
-    fillMaze();
+    fillMaze();    
 }
 
 function formMaze() {
@@ -18,7 +19,7 @@ function formMaze() {
     for (var y = 0; y < SIZE.height; y++) {
         MAZE.maze[y] = [];
 
-        for (var x = 0; x < SIZE.width; MAZE.maze[y][x++] = 'wall') {
+        for (var x = 0; x < SIZE.width; MAZE.maze[y][x++] = "wall") {
             $(".maze").append("<div class=\"block wall\" id=" + y + "-" + x + "></div>");
         }
     }
@@ -32,7 +33,7 @@ function fillMaze() {
                 (host[1] + (randomWall[1] - host[1]) * 2)];
 
         if (valid(opposite[0], opposite[1])) {
-            if (MAZE.maze[opposite[0]][opposite[1]] == 'maze') MAZE.walls.splice( MAZE.walls.indexOf(randomWall), 1);
+            if (MAZE.maze[opposite[0]][opposite[1]] == "maze") MAZE.walls.splice( MAZE.walls.indexOf(randomWall), 1);
 
             else {
                 amaze(randomWall[0], randomWall[1], false);
@@ -43,8 +44,34 @@ function fillMaze() {
         else MAZE.walls.splice(MAZE.walls.indexOf(randomWall), 1);
     }
 
-    $("#0-0").removeClass().addClass("block start").attr("title", "start");
+    MAZE.maze[0][0] = "maze";
+    MAZE.maze[SIZE.height-2][SIZE.width-2] = "maze";
+
+    $("#0-0").removeClass().addClass("block player").attr("title", "start");
     $("#" + (SIZE.height-2) + "-" + (SIZE.width-2) ).removeClass().addClass("block finish").attr("title", "finish");
+}
+
+function move(symbol) {
+    var shift = getShift(symbol);
+    var newPosition = [MAZE.currentPosition[0]+shift[1], MAZE.currentPosition[1]+shift[0]];
+    var newPos = $("#" + newPosition[0] + "-" + newPosition[1]);
+    if(newPos.hasClass("finish")) {
+        location.reload();
+    }
+    if (valid(newPosition[0],newPosition[1]) && MAZE.maze[newPosition[0]][newPosition[1]] != 'wall') {
+        $("#" + MAZE.currentPosition[0] + "-" + MAZE.currentPosition[1]).removeClass().addClass("block");
+        MAZE.currentPosition = newPosition;
+        newPos.removeClass().addClass("block player");
+    }
+}
+
+function getShift(symbol) {
+    var sCode = symbol.keyCode;
+    if(CODE.indexOf(sCode) < 0) return [0,0];
+    if(sCode == 65 || sCode == 37 || sCode == 100) return SHIFT.left;
+    if(sCode == 87 || sCode == 38 || sCode == 104) return SHIFT.top;
+    if(sCode == 68 || sCode == 39 || sCode == 102) return SHIFT.right;
+    if(sCode == 83 || sCode == 40 || sCode == 98) return SHIFT.down;
 }
 
 function amaze(y, x, addBlockWalls) {
@@ -85,4 +112,13 @@ var MAZE = {
     maze:[],
     walls:[],
     currentPosition:[0,0]
+};
+
+var CODE = [65, 87, 68, 83, 37, 38, 39, 40, 100, 104, 102, 98];
+
+var SHIFT = {
+    left: [-1,0],
+    top: [0,-1],
+    right: [1,0],
+    down: [0,1]
 };
