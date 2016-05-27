@@ -1,8 +1,10 @@
 ;$(document).ready(function () {
     builtMaze();
+
     $(window).resize(function () {
         builtMaze();
     });
+
     $("body").keydown(move);
 });
 
@@ -62,19 +64,23 @@ function move(symbol) {
     }
     if(newPos.hasClass("finish")) {
         finishDate = new Date();
-        alert((finishDate - startDate)/1000 + "мс");
+        $(".block").remove();
 
-        location.reload();
+        $("body").append("<div class=\"result\" id=\"results\"> Ваш результат: " + (finishDate-startDate) / 1000 + "сек. </div>");
+
+        setTimeout(reload, 15000);
+        return;
     }
     if (valid(newPosition[0],newPosition[1]) && MAZE.maze[newPosition[0]][newPosition[1]] != 'wall') {
         pos.removeClass().addClass("block");
         MAZE.currentPosition = newPosition;
         newPos.removeClass().addClass("block player");
     }
-
-
 }
 
+function reload() {
+    location.reload();
+}
 function getShift(symbol) {
     var sCode = symbol.keyCode;
     if(CODE.indexOf(sCode) < 0) return [0,0];
