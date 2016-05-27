@@ -55,14 +55,24 @@ function move(symbol) {
     var shift = getShift(symbol);
     var newPosition = [MAZE.currentPosition[0]+shift[1], MAZE.currentPosition[1]+shift[0]];
     var newPos = $("#" + newPosition[0] + "-" + newPosition[1]);
+    var pos = $("#" + MAZE.currentPosition[0] + "-" + MAZE.currentPosition[1]);
+    if(checking){
+        startDate = new Date();
+        checking = false;
+    }
     if(newPos.hasClass("finish")) {
+        finishDate = new Date();
+        alert((finishDate - startDate)/1000 + "мс");
+
         location.reload();
     }
     if (valid(newPosition[0],newPosition[1]) && MAZE.maze[newPosition[0]][newPosition[1]] != 'wall') {
-        $("#" + MAZE.currentPosition[0] + "-" + MAZE.currentPosition[1]).removeClass().addClass("block");
+        pos.removeClass().addClass("block");
         MAZE.currentPosition = newPosition;
         newPos.removeClass().addClass("block player");
     }
+
+
 }
 
 function getShift(symbol) {
@@ -122,3 +132,6 @@ var SHIFT = {
     right: [1,0],
     down: [0,1]
 };
+var startDate = 0;
+var finishDate = 0;
+var checking = true;

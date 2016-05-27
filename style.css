@@ -20,13 +20,10 @@ body {
 .wall {
     background: #000;
 }
-.start {
-    background: lightgreen;
-}
 .finish {
     background: blue;
 }
 .player {
     background: red;
-    border-radius: 5px ;
+    border-radius: 6px ;
 }
